@@ -101,7 +101,6 @@ spec:
       {{- if .Values.persistence.enabled }}
         persistentVolumeClaim:
           claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ template "ethereum.fullname" . }}{{- end }}
-
       {{- else }}
         emptyDir: {}
       - name: config
@@ -110,4 +109,4 @@ spec:
       - name: account
         secret:
           secretName: {{ template "ethereum.fullname" . }}-geth-account
-{{- end -}}
+      {{- end -}}
