@@ -92,17 +92,18 @@ spec:
         - name: data
           mountPath: /geth
       volumes:
-      - name: data
-      {{- if .Values.persistence.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ template "ethereum.fullname" . }}{{- end }}
-      {{- else }}
-        emptyDir: {}
-      {{- end -}}
       - name: config
         configMap:
           name: {{ template "ethereum.fullname" . }}-geth-config
       - name: account
         secret:
           secretName: {{ template "ethereum.fullname" . }}-geth-account
+      - name: data
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.existingClaim | default (include "ethereum.fullname" .) }}
+      {{- else }}
+        emptyDir: {}
+      {{- end -}}
+
 
