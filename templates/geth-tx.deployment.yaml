@@ -95,15 +95,6 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /geth
-      volumes:
-      - name: data
-        emptyDir: {}
-      - name: config
-        configMap:
-          name: {{ template "ethereum.fullname" . }}-geth-config
-      - name: account
-        secret:
-          secretName: {{ template "ethereum.fullname" . }}-geth-account
 {{ toYaml .Values.resources | indent 10 }}
       volumes:
       - name: data
@@ -113,4 +104,10 @@ spec:
 
       {{- else }}
         emptyDir: {}
+      - name: config
+        configMap:
+          name: {{ template "ethereum.fullname" . }}-geth-config
+      - name: account
+        secret:
+          secretName: {{ template "ethereum.fullname" . }}-geth-account
 {{- end -}}
