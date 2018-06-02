@@ -91,7 +91,6 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /geth
-{{ toYaml .Values.resources | indent 10 }}
       volumes:
       - name: data
       {{- if .Values.persistence.enabled }}
@@ -99,10 +98,11 @@ spec:
           claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ template "ethereum.fullname" . }}{{- end }}
       {{- else }}
         emptyDir: {}
+      {{- end -}}
       - name: config
         configMap:
           name: {{ template "ethereum.fullname" . }}-geth-config
       - name: account
         secret:
           secretName: {{ template "ethereum.fullname" . }}-geth-account
-      {{- end -}}
+
